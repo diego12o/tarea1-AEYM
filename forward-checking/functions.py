@@ -78,32 +78,9 @@ def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0, revise
                     revised.append(row_array)
                     aux_array, evaluation = domain_filter(aux_array, row, revised[:])
                 
-                # if row == 0: print("-------ASIGNACIÓN--------")
-                # for r in array:
-                #     print_row(r)
-                
-                # print("---------------------------------")
-                
-                # print("DOMAIN FILTER RESULT")
-                # print("AFTER EVALUATION")
-                # for r in aux_array:
-                #     print_row(r)
-                # print("---------------------------------")
-                
-                
                 #if len(aux_array) != 0: array = aux_array
                 if evaluation or row+1 == len(array): 
                     if search_solution(aux_array[:], row=row+1, revised=revised[:], order=order): return True
-                    # if row == len(array):
-                    # # if row == len(array):
-                    #     print("SOLUCIÓN")
-                    #     for r in array:
-                    #         print_row(r)
-                    #     print("---------------")
-                        
-                    #     return True
-                    
-                    # if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row): return True
 
 def search_solution(array, row, order, revised=[]):
     if row == len(array):
@@ -115,7 +92,8 @@ def search_solution(array, row, order, revised=[]):
         
         return True
     
-    if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row, revised=revised[:], order=order): return True
+    row_array = order[row]
+    if possible_solution(array=array[:], new_row=array[row_array][:], quantities=rows[row_array][:], pos=0, row=row, revised=revised[:], order=order): return True
 
 def domain_filter(array, k=0, revised=[]):
     # print("---------------")
@@ -174,12 +152,6 @@ def evaluate(row_or_col, quantities, bucket, pos=0, used=[]):
             
         if count > sum_quantities: state = False
         
-        # print("USED:")
-        # print(used)
-        # print("AUX:")
-        # print(aux)
-        # print("STATE:" + str(state))
-        # print("--------------------------------------------------------------")
         if state:
             if pos+1 < len(quantities): evaluate(row_or_col=aux[:], quantities=quantities, bucket=bucket, pos=pos+1, used=aux_used[:])
             else:

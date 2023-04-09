@@ -20,7 +20,7 @@ def seleccion(fila):
         for fila in range(0, j, 1):
             if peso_fila[fila] == k:
                 filas_ordenadas.append(fila)
-    print(filas_ordenadas)
+    # print(filas_ordenadas)
     #Entrega arreglo con fila i a revisar en orden
     return filas_ordenadas
 

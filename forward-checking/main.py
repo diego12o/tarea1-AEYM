@@ -1,5 +1,6 @@
 import functions
 import time
+import seleccion
 
 def main():
     cols = [[4], [2], [7], [3, 4], [7, 2], [7, 2], [3, 4], [7], [2], [4]]
@@ -17,6 +18,7 @@ def main():
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
     order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    order = seleccion.seleccion(rows)
     start = time.time()    
     # functions.possible_solution(array=array[:], new_row=array[0][:], quantities=rows[0][:], pos=0, row=0)
     functions.search_solution(array=array, row=0, order=order)
