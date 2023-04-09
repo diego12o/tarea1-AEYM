@@ -90,7 +90,17 @@ def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0):
                 
                 #if len(aux_array) != 0: array = aux_array
                 if evaluation or row+1 == len(array): 
-                    if search_solution(aux_array[:], row=row+1): return True
+                    # if search_solution(aux_array[:], row=row+1): return True
+                    if row == len(array):
+                        # if row == len(array):
+                        print("SOLUCIÓN")
+                        for r in array:
+                            print_row(r)
+                        print("---------------")
+        
+                        return True
+    
+                    if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row+1): return True
 
 
 def search_solution(array, row):
