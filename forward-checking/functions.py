@@ -23,7 +23,7 @@ def assignment(quantity, new_row, i, evaluate=False, used=[]):
         else: state = False
         #print("First condition: " + str(state))
 
-    if i+quantity < 10:
+    if i+quantity < len(aux):
         if aux[i+quantity] != 1 and state: aux[i+quantity] = -1
         else: state = False
         #print("Second condition: " + str(state))
@@ -54,7 +54,7 @@ def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0, revise
     quantity = quantities[pos]
 
     row_array = order[row]
-    for i in range(10-quantity+1):
+    for i in range(len(array)-quantity+1):
         
         state, aux, used = assignment(quantity=quantity, new_row=new_row[:], i=i)
         
@@ -141,7 +141,7 @@ def evaluate(row_or_col, quantities, bucket, pos=0, used=[]):
     # print_row(row_or_col)
     # print(bucket)
     
-    for i in range(10-quantity+1):        
+    for i in range(len(row_or_col)-quantity+1):        
         state, aux, aux_used = assignment(quantity=quantity, new_row=row_or_col[:], i=i, evaluate=True, used=used[:])
         #print("New possible solution")
         # print_row(aux)
