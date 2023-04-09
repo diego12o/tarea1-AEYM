@@ -50,22 +50,23 @@ def assignment(quantity, new_row, i, evaluate=False, used=[]):
     #print_row(aux)
     return state, aux, used
         
-def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0):
+def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0, revised=[], order=[]):
     quantity = quantities[pos]
 
+    row_array = order[row]
     for i in range(10-quantity+1):
         
         state, aux, used = assignment(quantity=quantity, new_row=new_row[:], i=i)
         
         if state:
             if pos+1 < len(quantities):
-                if possible_solution(array=array[:], new_row=aux[:], quantities=quantities, pos=pos+1, row=row): return True
+                if possible_solution(array=array[:], new_row=aux[:], quantities=quantities, pos=pos+1, row=row, revised=revised[:], order=order): return True
             else:
                 # print_row(aux)
                 for j in range(len(aux)):
                     if aux[j] == 0:
                         aux[j] = -1
-                array[row] = aux
+                array[row_array] = aux
                 
                 evaluation = True
                 aux_array = []
@@ -73,7 +74,9 @@ def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0):
                 for r in array:
                     aux_array.append(r[:])
                 
-                if row+1 < len(array): aux_array, evaluation = domain_filter(aux_array, row)
+                if row+1 < len(array):
+                    revised.append(row_array)
+                    aux_array, evaluation = domain_filter(aux_array, row, revised[:])
                 
                 # if row == 0: print("-------ASIGNACIÓN--------")
                 # for r in array:
@@ -90,20 +93,19 @@ def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0):
                 
                 #if len(aux_array) != 0: array = aux_array
                 if evaluation or row+1 == len(array): 
-                    # if search_solution(aux_array[:], row=row+1): return True
-                    if row == len(array):
-                        # if row == len(array):
-                        print("SOLUCIÓN")
-                        for r in array:
-                            print_row(r)
-                        print("---------------")
-        
-                        return True
-    
-                    if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row+1): return True
+                    if search_solution(aux_array[:], row=row+1, revised=revised[:], order=order): return True
+                    # if row == len(array):
+                    # # if row == len(array):
+                    #     print("SOLUCIÓN")
+                    #     for r in array:
+                    #         print_row(r)
+                    #     print("---------------")
+                        
+                    #     return True
+                    
+                    # if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row): return True
 
-
-def search_solution(array, row):
+def search_solution(array, row, order, revised=[]):
     if row == len(array):
     # if row == len(array):
         print("SOLUCIÓN")
@@ -113,9 +115,9 @@ def search_solution(array, row):
         
         return True
     
-    if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row): return True
+    if possible_solution(array=array[:], new_row=array[row][:], quantities=rows[row][:], pos=0, row=row, revised=revised[:], order=order): return True
 
-def domain_filter(array, k=0):
+def domain_filter(array, k=0, revised=[]):
     # print("---------------")
     # for r in array:
     #     print_row(r)
@@ -131,22 +133,23 @@ def domain_filter(array, k=0):
         
         count = 0
         for j in range(len(array)):
-            if j >= k+1: array[j][i] = bucket[j]
+            if j not in revised: array[j][i] = bucket[j]
             if bucket[j] == -1: count = count + 1
             
         if count == len(array): return array, False
     
     
-    for i in range(k+1, len(array)):
-        bucket = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-        evaluate(array[i], rows[i], bucket)
-        #print_row(bucket)
-        count = 0
-        for j in range(len(array)):
-            array[i][j] = bucket[j]
-            if bucket[j] == -1: count = count + 1
+    for i in range(len(array)):
+        if i not in revised:
+            bucket = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+            evaluate(array[i], rows[i], bucket)
+            #print_row(bucket)
+            count = 0
+            for j in range(len(array)):
+                array[i][j] = bucket[j]
+                if bucket[j] == -1: count = count + 1
 
-        if count == len(array): return array, False
+            if count == len(array): return array, False
         
     return array, True
 
