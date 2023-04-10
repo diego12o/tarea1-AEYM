@@ -6,6 +6,8 @@
 cols = [[4], [2], [7], [3, 4], [7, 2], [7, 2], [3, 4], [7], [2], [4]]
 rows = [[4], [8], [10], [1, 1, 2, 1, 1], [1, 1, 2, 1, 1], [1, 6, 1], [6], [2, 2], [4], [2]]
 
+contador = 0
+
 # UNUSABLE POSITIONS
 # RESTART AFTER EVALUATION
 
@@ -63,6 +65,8 @@ def possible_solution(array, new_row=[], quantities=[], row = 0, pos = 0, revise
                 if possible_solution(array=array[:], new_row=aux[:], quantities=quantities, pos=pos+1, row=row, revised=revised[:], order=order): return True
             else:
                 # print_row(aux)
+                global contador
+                contador = contador + 1
                 for j in range(len(aux)):
                     if aux[j] == 0:
                         aux[j] = -1
@@ -89,6 +93,7 @@ def search_solution(array, row, order, revised=[]):
         for r in array:
             print_row(r)
         print("---------------")
+        print("Nodos: " + str(contador))
         
         return True
     
@@ -170,41 +175,3 @@ def print_row(row):
     row_str = str(row).replace('0', ' 0').replace('1', ' 1').replace("- 1", "\033[;31m"+"-1"+"\033[;37m")
     print(row_str)
     
-    
-array = [
-    [-1, -1,  1,  1,  1,  1, -1, -1, -1, -1],
-    [ 1,  1,  1,  1,  1,  1,  1,  1, -1, -1],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0, -1,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0, -1,  0,  0,  0,  0,  0,  0,  0,  0],
-    [-1, -1,  0,  0,  0,  0,  0,  0,  0,  0],
-    [-1, -1,  0,  0,  0,  0,  0,  0,  0,  0],
-    [-1, -1, -1,  0,  0,  0,  0,  0,  0,  0],
-    [-1, -1, -1,  0,  0,  0,  0, -1, -1, -1],
-    [-1, -1, -1,  0,  0,  0,  0, -1,  0,  0]
-]
-array = [
-    [-1, -1,  1,  1,  1,  1, -1, -1, -1, -1],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
-]
-# evaluation = True
-
-# aux_array, evaluation = domain_filter(array[:], 1)
-# print("DOMAIN FILTER RESULT")
-
-# for r in aux_array:
-#     print_row(r)
-
-# aux_array = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# bucket = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-# evaluate(aux_array, cols[0], bucket)
-
-# print(bucket)
